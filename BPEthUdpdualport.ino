@@ -8,7 +8,8 @@ CRGB * _fastLEDs;
 CRGB * _fastLEDs1;
 CLEDController * pLed = NULL;
 CLEDController * pLed1 = NULL;
-uint16_t numLEDs = 681;
+uint16_t numLEDs = 100; //must be same as num in bibliopixel file
+uint16_t numLEDs1 = 100;//must be same as num in bibliopixel file
 uint8_t bytesPerPixel = 3;
 // Enter a MAC address and IP address for your controller below.
 // The IP address will be dependent on your local network:
@@ -30,10 +31,10 @@ void setup() {
           
       _fastLEDs = (CRGB*)malloc(sizeof(CRGB)*numLEDs);
   memset(_fastLEDs, 0, sizeof(CRGB)*numLEDs);
-  _fastLEDs1 = (CRGB*)malloc(sizeof(CRGB)*numLEDs);
-  memset(_fastLEDs1, 0, sizeof(CRGB)*numLEDs);
-         pLed = new APA102Controller<11, 10, BGR, 8950000>();
-          pLed1 = new APA102Controller<26, 0, BGR, 8950000>();
+  _fastLEDs1 = (CRGB*)malloc(sizeof(CRGB)*numLEDs1);
+  memset(_fastLEDs1, 0, sizeof(CRGB)*numLEDs1);
+         pLed = new APA102Controller<11, 10, BGR, 8950000>(); //change led type <data, clock, LedOrder,SpiSpeed>for whatever setup
+          pLed1 = new APA102Controller<26, 0, BGR, 8950000>(); //change led type <data, clock, LedOrder,SpiSpeed>for whatever setup
   
     
        FastLED.addLeds(pLed, _fastLEDs, numLEDs);
@@ -44,8 +45,7 @@ void setup() {
 void getData()
 {
   int packetSize = Udp.parsePacket();
-  
-  if(packetSize) {
+    if(packetSize) {
     Serial.print("Received packet of size ");
     Serial.println(packetSize);
     Serial.print("From ");
@@ -136,7 +136,7 @@ void getData()
     static uint16_t count = 0;
     static uint8_t emptyCount = 0;
     static size_t c = 0;
-    static uint16_t packetSize1 = numLEDs * bytesPerPixel;
+    static uint16_t packetSize1 = numLEDs1 * bytesPerPixel;
    
     cmd = Udp1.read();
     size = 0;
